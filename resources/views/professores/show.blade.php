@@ -1,30 +1,20 @@
-@extends('layouts.layout_principal')
+<x-layouts.app>
 
-@section('title', 'Detalhes do Professor - Boletim Escolar')
+    <head>
+        <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    </head>
 
-@section('content')
-    <main class="p-6">
-        <div class="card">
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <h1>Detalhes do Professor</h1>
-                <a href="{{ route('professores.index') }}" class="btn btn-dark btn-custom">Voltar</a>
-            </div>
+    <div class="container">
+        <h1>Detalhes do Professor</h1>
 
-            <div class="mb-3"><span class="fw-bold">ID:</span> {{ $professor->id }}</div>
-            <div class="mb-3"><span class="fw-bold">Nome:</span> {{ $professor->nome }}</div>
-            <div class="mb-3"><span class="fw-bold">Email:</span> {{ $professor->email }}</div>
-            <div class="mb-3"><span class="fw-bold">Disciplina:</span>
-                {{ $professor->disciplina->nome ?? 'Sem disciplina' }}</div>
+        <div class="mb-3"><strong>ID:</strong> {{ $professor->id }}</div>
+        <div class="mb-3"><strong>Nome:</strong> {{ $professor->nome }}</div>
+        <div class="mb-3"><strong>Email:</strong> {{ $professor->email }}</div>
+        <div class="mb-3"><strong>Disciplina:</strong> {{ $professor->disciplina->nome ?? 'Sem disciplina' }}</div>
 
-            <div class="d-flex gap-2 mt-4">
-                <a href="{{ route('professores.edit', $professor) }}" class="btn btn-warning btn-custom">Editar</a>
-                <form action="{{ route('professores.destroy', $professor) }}" method="POST"
-                    onsubmit="return confirm('Deseja realmente excluir?');">
-                    @csrf
-                    @method('DELETE')
-                    <button class="btn btn-danger btn-custom">Excluir</button>
-                </form>
-            </div>
+        <div class="form-actions">
+            <a href="{{ route('professores.edit', $professor) }}" class="btn yellow">Editar</a>
+            <a href="{{ route('professores.index') }}" class="btn gray">Voltar</a>
         </div>
-    </main>
-@endsection
+    </div>
+</x-layouts.app>

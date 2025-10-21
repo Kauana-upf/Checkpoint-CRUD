@@ -1,43 +1,55 @@
-@extends('layouts.layout_principal')
+<x-layouts.app>
 
-@section('title', 'Cadastrar Professor - Boletim Escolar')
+    <head>
+        <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    </head>
 
-@section('content')
-    <main class="p-6">
-        <div class="card">
-            <h1>Cadastrar Professor</h1>
+    <div class="container">
+        <h1>Cadastrar Professor</h1>
 
-            @if (session('error'))
-                <div class="alert alert-danger">{{ session('error') }}</div>
-            @endif
+        @if (session('error'))
+            <div class="alert alert-danger">{{ session('error') }}</div>
+        @endif
 
-            <form action="{{ route('professores.store') }}" method="POST" class="d-flex flex-column gap-3">
-                @csrf
-                <div class="mb-3">
-                    <label for="nome" class="form-label">Nome</label>
-                    <input type="text" name="nome" id="nome" class="form-control" required>
-                </div>
+        <form action="{{ route('professores.store') }}" method="POST">
+            @csrf
 
-                <div class="mb-3">
-                    <label for="email" class="form-label">Email</label>
-                    <input type="email" name="email" id="email" class="form-control" required>
-                </div>
+            <div class="form-group">
+                <label for="nome">Nome</label>
+                <input type="text" name="nome" id="nome" value="{{ old('nome') }}" required>
+                @error('nome')
+                    <span class="error">{{ $message }}</span>
+                @enderror
+            </div>
 
-                <div class="mb-3">
-                    <label for="disciplina_id" class="form-label">Disciplina</label>
-                    <select name="disciplina_id" id="disciplina_id" class="form-select" required>
-                        <option value="">-- Selecione a disciplina --</option>
-                        @foreach ($disciplinas as $disciplina)
-                            <option value="{{ $disciplina->id_disciplina }}">{{ $disciplina->nome }}</option>
-                        @endforeach
-                    </select>
-                </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" name="email" id="email" value="{{ old('email') }}" required>
+                @error('email')
+                    <span class="error">{{ $message }}</span>
+                @enderror
+            </div>
 
-                <div class="d-flex flex-column gap-2 mt-3">
-                    <button type="submit" class="btn btn-dark btn-custom">Salvar</button>
-                    <a href="{{ route('professores.index') }}" class="btn btn-secondary btn-custom">Voltar</a>
-                </div>
-            </form>
-        </div>
-    </main>
-@endsection
+            <div class="form-group">
+                <label for="disciplina_id">Disciplina</label>
+                <select name="disciplina_id" id="disciplina_id" required>
+                    <option value="">-- Selecione a disciplina --</option>
+                    @foreach ($disciplinas as $disciplina)
+                        <option value="{{ $disciplina->id_disciplina }}"
+                            {{ old('disciplina_id') == $disciplina->id_disciplina ? 'selected' : '' }}>
+                            {{ $disciplina->nome }}
+                        </option>
+                    @endforeach
+                </select>
+                @error('disciplina_id')
+                    <span class="error">{{ $message }}</span>
+                @enderror
+            </div>
+
+            <div class="form-actions">
+                <button type="submit">Salvar</button>
+                <a href="{{ route('professores.index') }}" class="btn gray">Voltar</a>
+            </div>
+        </form>
+    </div>
+</x-layouts.app>
