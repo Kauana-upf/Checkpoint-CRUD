@@ -27,7 +27,7 @@
             <div class="form-group">
                 <label for="nome">Nome</label>
                 <input type="text" name="nome" id="nome" value="{{ old('nome', $professor->nome ?? '') }}"
-                    required>
+                    placeholder="Ex: João da Silva" required>
                 @error('nome')
                     <span class="error">{{ $message }}</span>
                 @enderror
@@ -36,7 +36,7 @@
             <div class="form-group">
                 <label for="email">Email</label>
                 <input type="email" name="email" id="email" value="{{ old('email', $professor->email ?? '') }}"
-                    required>
+                    placeholder="exemplo@email.com" required>
                 @error('email')
                     <span class="error">{{ $message }}</span>
                 @enderror
@@ -59,7 +59,9 @@
             </div>
 
             <div class="form-actions">
-                <button type="submit">{{ isset($professor) ? 'Atualizar' : 'Cadastrar' }}</button>
+                <button type="submit">
+                    {{ isset($professor) ? 'Atualizar' : 'Cadastrar' }}
+                </button>
                 <a href="{{ route('professores.index') }}" class="btn gray">Cancelar</a>
             </div>
         </form>

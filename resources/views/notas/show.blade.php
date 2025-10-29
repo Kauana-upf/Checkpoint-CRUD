@@ -1,3 +1,7 @@
+@extends('layouts.layout_principal')
+
+@include('layouts.header')
+
 <x-layouts.app>
 
     <head>
@@ -7,10 +11,25 @@
     <div class="container">
         <h1>Detalhes da Nota</h1>
 
-        <div class="mb-3"><strong>ID:</strong> {{ $nota->id }}</div>
-        <div class="mb-3"><strong>Aluno:</strong> {{ $nota->aluno->nome }}</div>
-        <div class="mb-3"><strong>Disciplina:</strong> {{ $nota->disciplina->nome }}</div>
-        <div class="mb-3"><strong>Nota:</strong> {{ $nota->nota }}</div>
+        <div class="form-group">
+            <label><strong>ID:</strong></label>
+            <p>{{ $nota->id }}</p>
+        </div>
+
+        <div class="form-group">
+            <label><strong>Aluno:</strong></label>
+            <p>{{ $nota->aluno->nome }}</p>
+        </div>
+
+        <div class="form-group">
+            <label><strong>Disciplina:</strong></label>
+            <p>{{ $nota->disciplina->nome }}</p>
+        </div>
+
+        <div class="form-group">
+            <label><strong>Nota:</strong></label>
+            <p>{{ $nota->nota }}</p>
+        </div>
 
         <div class="form-actions">
             <a href="{{ route('notas.edit', $nota) }}" class="btn yellow">Editar</a>

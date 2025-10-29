@@ -2,5 +2,5 @@
     <p>Autora: Kauana Menin</p>
     <p>Disciplina: Tópicos Especiais em Desenvolvimento de Software</p>
     <p>Curso: Análise e Desenvolvimento de Sistemas</p>
-    <p>Universidade: Universidade de Passo Fundo</p>
+    <p>Universidade de Passo Fundo</p>
 </footer>
