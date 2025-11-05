@@ -1,69 +1,80 @@
-<x-layouts.app :title="isset($professor) ? __('Editar Professor') : __('Cadastrar Professor')">
+@extends('layouts.layout_principal')
 
-    <head>
-        <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-    </head>
+@section('title', isset($professor) ? 'Editar Professor - Boletim Escolar Online' : 'Cadastrar Professor - Boletim
+    Escolar Online')
 
-    <div class="container">
-        <h1>{{ isset($professor) ? 'Editar Professor' : 'Cadastrar Professor' }}</h1>
+@section('content')
+    <div class="container mt-4">
+        <div class="card shadow p-4">
+            <h1>{{ isset($professor) ? 'Editar Professor' : 'Cadastrar Professor' }}</h1>
 
-        @if ($errors->any())
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
-
-        <form action="{{ isset($professor) ? route('professores.update', $professor->id) : route('professores.store') }}"
-            method="POST">
-            @csrf
-            @if (isset($professor))
-                @method('PUT')
+            {{-- Exibe mensagens de erro de validação --}}
+            @if ($errors->any())
+                <div class="alert alert-danger mt-3">
+                    <ul class="mb-0">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
             @endif
 
-            <div class="form-group">
-                <label for="nome">Nome</label>
-                <input type="text" name="nome" id="nome" value="{{ old('nome', $professor->nome ?? '') }}"
-                    placeholder="Ex: João da Silva" required>
-                @error('nome')
-                    <span class="error">{{ $message }}</span>
-                @enderror
-            </div>
+            {{-- Formulário para criar ou atualizar um professor --}}
+            <form action="{{ isset($professor) ? route('professores.update', $professor->id) : route('professores.store') }}"
+                method="POST" class="mt-4">
+                @csrf
+                @if (isset($professor))
+                    @method('PUT')
+                @endif
 
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" name="email" id="email" value="{{ old('email', $professor->email ?? '') }}"
-                    placeholder="exemplo@email.com" required>
-                @error('email')
-                    <span class="error">{{ $message }}</span>
-                @enderror
-            </div>
+                {{-- Campo: Nome --}}
+                <div class="form-group mb-3">
+                    <label for="nome" class="form-label"><strong>Nome</strong></label>
+                    <input type="text" name="nome" id="nome" class="form-control"
+                        value="{{ old('nome', $professor->nome ?? '') }}" placeholder="Ex: João da Silva" required>
+                    @error('nome')
+                        <span class="text-danger small">{{ $message }}</span>
+                    @enderror
+                </div>
 
-            <div class="form-group">
-                <label for="disciplina_id">Disciplina</label>
-                <select name="disciplina_id" id="disciplina_id" required>
-                    <option value="">Selecione a disciplina</option>
-                    @foreach ($disciplinas as $disciplina)
-                        <option value="{{ $disciplina->id_disciplina }}"
-                            {{ old('disciplina_id', $professor->disciplina_id ?? ($professor->disciplina->id_disciplina ?? '')) == $disciplina->id_disciplina ? 'selected' : '' }}>
-                            {{ $disciplina->nome }}
-                        </option>
-                    @endforeach
-                </select>
-                @error('disciplina_id')
-                    <span class="error">{{ $message }}</span>
-                @enderror
-            </div>
+                {{-- Campo: Email --}}
+                <div class="form-group mb-3">
+                    <label for="email" class="form-label"><strong>Email</strong></label>
+                    <input type="email" name="email" id="email" class="form-control"
+                        value="{{ old('email', $professor->email ?? '') }}" placeholder="exemplo@email.com" required>
+                    @error('email')
+                        <span class="text-danger small">{{ $message }}</span>
+                    @enderror
+                </div>
 
-            <div class="form-actions">
-                <button type="submit">
-                    {{ isset($professor) ? 'Atualizar' : 'Cadastrar' }}
-                </button>
-                <a href="{{ route('professores.index') }}" class="btn gray">Cancelar</a>
-            </div>
-        </form>
+                {{-- Campo: Disciplina --}}
+                <div class="form-group mb-3">
+                    <label for="disciplina_id" class="form-label"><strong>Disciplina</strong></label>
+                    <select name="disciplina_id" id="disciplina_id" class="form-select" required>
+                        <option value="">Selecione a disciplina</option>
+                        @foreach ($disciplinas as $disciplina)
+                            <option value="{{ $disciplina->id_disciplina }}"
+                                {{ old('disciplina_id', $professor->disciplina_id ?? ($professor->disciplina->id_disciplina ?? '')) == $disciplina->id_disciplina ? 'selected' : '' }}>
+                                {{ $disciplina->nome }}
+                            </option>
+                        @endforeach
+                    </select>
+                    @error('disciplina_id')
+                        <span class="text-danger small">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                {{-- Botões de ação --}}
+                <div class="mt-4 d-flex gap-2">
+                    {{-- POST ou PUT → envia formulário --}}
+                    <button type="submit" class="btn btn-dark btn-custom">
+                        {{ isset($professor) ? 'Atualizar' : 'Cadastrar' }}
+                    </button>
+
+                    {{-- GET → apenas redireciona --}}
+                    <a href="{{ route('professores.index') }}" class="btn btn-secondary btn-custom">Cancelar</a>
+                </div>
+            </form>
+        </div>
     </div>
-</x-layouts.app>
+@endsection

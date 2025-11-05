@@ -1,56 +1,63 @@
-<x-layouts.app :title="__('Editar Disciplina')" :dark-mode="auth()->user()->pref_dark_mode">
+@extends('layouts.layout_principal')
 
-    <head>
-        <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-    </head>
+@section('title', 'Editar Disciplina')
 
-    <div class="container">
-        <h1>Editar Disciplina</h1>
+@section('content')
+    <div class="container mt-4">
+        <div class="card shadow p-4">
+            <h2 class="mb-4 text-center">Editar Disciplina</h2>
 
-        @if ($errors->any())
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
+            {{-- Verifica se há erros de validação --}}
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul class="mb-0">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
+            {{-- Formulário para editar disciplina --}}
+            {{-- action chama a rota 'disciplinas.update' que executa o método update do controller --}}
+            {{-- PUT é usado porque está ATUALIZANDO dados já existentes --}}
+            <form action="{{ route('disciplinas.update', $disciplina->id_disciplina) }}" method="POST">
+                @csrf
+                @method('PUT')
+
+                <div class="form-group mb-3">
+                    <label for="nome" class="form-label fw-semibold">Nome</label>
+                    <input type="text" name="nome" id="nome" value="{{ old('nome', $disciplina->nome) }}"
+                        class="form-control" required>
+                    @error('nome')
+                        <span class="error text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="carga_horaria" class="form-label fw-semibold">Carga Horária</label>
+                    <input type="number" name="carga_horaria" id="carga_horaria"
+                        value="{{ old('carga_horaria', $disciplina->carga_horaria) }}" class="form-control" required>
+                    @error('carga_horaria')
+                        <span class="error text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="descricao" class="form-label fw-semibold">Descrição</label>
+                    <textarea name="descricao" id="descricao" rows="4" class="form-control">{{ old('descricao', $disciplina->descricao) }}</textarea>
+                </div>
+
+                <div class="d-flex justify-content-end gap-2 mt-3">
+                    <button type="submit" class="btn btn-dark btn-custom">Atualizar</button>
+                    <a href="{{ route('disciplinas.show', $disciplina->id_disciplina) }}"
+                        class="btn btn-secondary btn-custom">Cancelar</a>
+                </div>
+            </form>
+
+            <div class="mt-3 text-end">
+                <a href="{{ url('/dashboard') }}" class="btn btn-dark btn-custom">Voltar</a>
             </div>
-        @endif
-
-        <form action="{{ route('disciplinas.update', $disciplina->id_disciplina) }}" method="POST">
-            @csrf
-            @method('PUT')
-
-            <div class="form-group">
-                <label for="nome">Nome</label>
-                <input type="text" name="nome" id="nome" value="{{ old('nome', $disciplina->nome) }}" required>
-                @error('nome')
-                    <span class="error">{{ $message }}</span>
-                @enderror
-            </div>
-
-            <div class="form-group">
-                <label for="carga_horaria">Carga Horária</label>
-                <input type="number" name="carga_horaria" id="carga_horaria"
-                    value="{{ old('carga_horaria', $disciplina->carga_horaria) }}" required>
-                @error('carga_horaria')
-                    <span class="error">{{ $message }}</span>
-                @enderror
-            </div>
-
-            <div class="form-group">
-                <label for="descricao">Descrição</label>
-                <textarea name="descricao" id="descricao" rows="4">{{ old('descricao', $disciplina->descricao) }}</textarea>
-            </div>
-
-            <div class="form-actions">
-                <button type="submit">Atualizar</button>
-                <a href="{{ route('disciplinas.show', $disciplina->id_disciplina) }}" class="btn gray">Cancelar</a>
-            </div>
-        </form>
-
-        <div class="mt-3 text-end">
-            <a href="{{ url('/dashboard') }}" class="btn btn-dark btn-custom">Voltar</a>
         </div>
     </div>
-</x-layouts.app>
+@endsection

@@ -1,15 +1,16 @@
 @extends('layouts.layout_principal')
 
-@section('title', 'Notas - Boletim Escolar')
+@section('title', 'Notas - Boletim Escolar Online')
 
 @section('content')
-    <div class="container mt-4">
-        <div class="card shadow p-4">
+    <main>
+        <div class="card p-4">
             <div class="d-flex justify-content-between align-items-center mb-4">
-                <h2>Notas</h2>
-                <a href="{{ route('notas.create') }}" class="btn btn-primary">+ Nova Nota</a>
+                <h1>Notas</h1>
+                <a href="{{ route('notas.create') }}" class="btn btn-dark btn-custom">+ Nova Nota</a>
             </div>
 
+            {{-- Verifica se há notas cadastradas --}}
             @if ($notas->isEmpty())
                 <p>Nenhuma nota cadastrada.</p>
             @else
@@ -29,8 +30,11 @@
                                 <td>{{ $nota->disciplina->nome }}</td>
                                 <td>{{ $nota->nota }}</td>
                                 <td>
+                                    {{-- Editar --}}
                                     <a href="{{ route('notas.edit', $nota->id_nota) }}"
                                         class="link text-warning me-2">Editar</a>
+
+                                    {{-- Excluir --}}
                                     <form action="{{ route('notas.destroy', $nota->id_nota) }}" method="POST"
                                         class="d-inline">
                                         @csrf
@@ -48,9 +52,10 @@
                 </table>
             @endif
 
+            {{-- Botão para voltar --}}
             <div class="mt-3 text-end">
-                <a href="{{ url('/dashboard') }}" class="btn btn-secondary">Voltar</a>
+                <a href="{{ url('/dashboard') }}" class="btn btn-secondary btn-custom">Voltar</a>
             </div>
         </div>
-    </div>
+    </main>
 @endsection

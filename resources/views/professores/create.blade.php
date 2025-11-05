@@ -1,57 +1,80 @@
-<x-layouts.app>
+@extends('layouts.layout_principal')
 
-    <head>
-        <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-    </head>
+@section('title', 'Cadastrar Professor - Boletim Escolar Online')
 
-    <div class="container">
-        <h1>Novo Professor</h1>
+@section('content')
+    <main>
+        <div class="card p-4">
+            <h1 class="mb-4">Cadastrar Professor</h1>
 
-        @if (session('error'))
-            <div class="alert alert-danger">{{ session('error') }}</div>
-        @endif
+            {{-- Exibe mensagens de erro ou falhas --}}
+            @if (session('error'))
+                <div class="alert alert-danger">{{ session('error') }}</div>
+            @endif
 
-        <form action="{{ route('professores.store') }}" method="POST">
-            @csrf
+            {{-- Exibe erros de validação do formulário --}}
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul class="mb-0">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
 
-            <div class="form-group">
-                <label for="nome">Nome</label>
-                <input type="text" name="nome" id="nome" value="{{ old('nome') }}"
-                    placeholder="Ex: João da Silva" required>
-                @error('nome')
-                    <span class="error">{{ $message }}</span>
-                @enderror
-            </div>
+            {{-- Formulário de cadastro de professor --}}
+            {{-- action chama a rota professores.store, que executa o método store no controller --}}
+            {{-- method="POST" é usado pois estamos enviando dados para criar um novo registro --}}
+            <form action="{{ route('professores.store') }}" method="POST">
+                @csrf
 
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" name="email" id="email" value="{{ old('email') }}"
-                    placeholder="exemplo@email.com" required>
-                @error('email')
-                    <span class="error">{{ $message }}</span>
-                @enderror
-            </div>
+                {{-- Campo: Nome --}}
+                <div class="form-group mb-3">
+                    <label for="nome" class="form-label"><strong>Nome</strong></label>
+                    <input type="text" name="nome" id="nome" class="form-control" value="{{ old('nome') }}"
+                        placeholder="Ex: João da Silva" required>
+                    @error('nome')
+                        <span class="text-danger small">{{ $message }}</span>
+                    @enderror
+                </div>
 
-            <div class="form-group">
-                <label for="disciplina_id">Disciplina</label>
-                <select name="disciplina_id" id="disciplina_id" required>
-                    <option value="">Selecione a disciplina</option>
-                    @foreach ($disciplinas as $disciplina)
-                        <option value="{{ $disciplina->id_disciplina }}"
-                            {{ old('disciplina_id') == $disciplina->id_disciplina ? 'selected' : '' }}>
-                            {{ $disciplina->nome }}
-                        </option>
-                    @endforeach
-                </select>
-                @error('disciplina_id')
-                    <span class="error">{{ $message }}</span>
-                @enderror
-            </div>
+                {{-- Campo: Email --}}
+                <div class="form-group mb-3">
+                    <label for="email" class="form-label"><strong>Email</strong></label>
+                    <input type="email" name="email" id="email" class="form-control" value="{{ old('email') }}"
+                        placeholder="exemplo@email.com" required>
+                    @error('email')
+                        <span class="text-danger small">{{ $message }}</span>
+                    @enderror
+                </div>
 
-            <div class="form-actions">
-                <button type="submit">Salvar</button>
-                <a href="{{ route('professores.index') }}" class="btn gray">Voltar</a>
-            </div>
-        </form>
-    </div>
-</x-layouts.app>
+                {{-- Campo: Disciplina --}}
+                <div class="form-group mb-4">
+                    <label for="disciplina_id" class="form-label"><strong>Disciplina</strong></label>
+                    <select name="disciplina_id" id="disciplina_id" class="form-select" required>
+                        <option value="">Selecione a disciplina</option>
+                        @foreach ($disciplinas as $disciplina)
+                            <option value="{{ $disciplina->id_disciplina }}"
+                                {{ old('disciplina_id') == $disciplina->id_disciplina ? 'selected' : '' }}>
+                                {{ $disciplina->nome }}
+                            </option>
+                        @endforeach
+                    </select>
+                    @error('disciplina_id')
+                        <span class="text-danger small">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                {{-- Botões de ação --}}
+                <div class="d-flex justify-content-between">
+                    {{-- Envia o formulário (POST) --}}
+                    <button type="submit" class="btn btn-dark btn-custom">Salvar</button>
+
+                    {{-- Volta para a lista de professores --}}
+                    <a href="{{ route('professores.index') }}" class="btn btn-secondary btn-custom">Voltar</a>
+                </div>
+            </form>
+        </div>
+    </main>
+@endsection
