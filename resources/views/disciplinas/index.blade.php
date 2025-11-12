@@ -73,6 +73,20 @@
                     @endforeach
                 </tbody>
             </table>
+
+            {{-- Paginação das disciplinas --}}
+            @if ($disciplinas->hasPages())
+                <div class="pagination">
+                    <div class="pagination-info">
+                        {{ $disciplinas->firstItem() }}–{{ $disciplinas->lastItem() }}
+                        de {{ $disciplinas->total() }}
+                    </div>
+
+                    <div class="pagination-links">
+                        {{ $disciplinas->links() }}
+                    </div>
+                </div>
+            @endif
         </div>
 
         {{-- Botão para voltar à dashboard --}}

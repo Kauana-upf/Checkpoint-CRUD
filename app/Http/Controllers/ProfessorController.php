@@ -5,22 +5,19 @@ namespace App\Http\Controllers;
 use App\Models\Professor;
 use App\Models\Disciplina;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ProfessorController extends Controller
 {
     public function index()
     {
-        $professores = Professor::all();
+        $professores = Professor::with('disciplina')->get();
         return view('professores.index', compact('professores'));
     }
 
     public function create()
     {
         $disciplinas = Disciplina::all();
-        if ($disciplinas->isEmpty()) {
-            return redirect()->route('disciplinas.create')
-                             ->with('error', 'Nenhuma disciplina cadastrada. Cadastre uma disciplina antes de criar um professor.');
-        }
         return view('professores.create', compact('disciplinas'));
     }
 
@@ -28,12 +25,20 @@ class ProfessorController extends Controller
     {
         $request->validate([
             'nome' => 'required|string|max:255',
-            'email' => 'required|email|unique:professores,email',
-            'disciplina_id' => 'required|exists:disciplinas,id_disciplina'
+            'email' => 'required|email',
+            'disciplina_id' => 'required|exists:disciplinas,id_disciplina',
+            'status' => 'required|in:Ativo,Inativo',
+            'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
-        Professor::create($request->all());
-        return redirect()->route('professores.index')
-                         ->with('success', 'Professor criado com sucesso!');
+
+        $dados = $request->all();
+
+        if ($request->hasFile('foto')) {
+            $dados['foto'] = $request->file('foto')->store('fotos', 'public');
+        }
+
+        Professor::create($dados);
+        return redirect()->route('professores.index')->with('success', 'Professor cadastrado com sucesso!');
     }
 
     public function show(Professor $professor)
@@ -51,18 +56,32 @@ class ProfessorController extends Controller
     {
         $request->validate([
             'nome' => 'required|string|max:255',
-            'email' => 'required|email|unique:professores,email,' . $professor->id,
-            'disciplina_id' => 'required|exists:disciplinas,id_disciplina'
+            'email' => 'required|email',
+            'disciplina_id' => 'required|exists:disciplinas,id_disciplina',
+            'status' => 'required|in:Ativo,Inativo',
+            'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
-        $professor->update($request->all());
-        return redirect()->route('professores.index')
-                         ->with('success', 'Professor atualizado com sucesso!');
+
+        $dados = $request->all();
+
+        if ($request->hasFile('foto')) {
+            if ($professor->foto && Storage::disk('public')->exists($professor->foto)) {
+                Storage::disk('public')->delete($professor->foto);
+            }
+            $dados['foto'] = $request->file('foto')->store('fotos', 'public');
+        }
+
+        $professor->update($dados);
+        return redirect()->route('professores.index')->with('success', 'Professor atualizado com sucesso!');
     }
 
     public function destroy(Professor $professor)
     {
+        if ($professor->foto && Storage::disk('public')->exists($professor->foto)) {
+            Storage::disk('public')->delete($professor->foto);
+        }
+
         $professor->delete();
-        return redirect()->route('professores.index')
-                         ->with('success', 'Professor removido com sucesso!');
+        return redirect()->route('professores.index')->with('success', 'Professor excluído com sucesso!');
     }
 }

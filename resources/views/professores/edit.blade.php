@@ -21,7 +21,7 @@
 
             {{-- Formulário para criar ou atualizar um professor --}}
             <form action="{{ isset($professor) ? route('professores.update', $professor->id) : route('professores.store') }}"
-                method="POST" class="mt-4">
+                method="POST" enctype="multipart/form-data" class="mt-4">
                 @csrf
                 @if (isset($professor))
                     @method('PUT')
@@ -64,14 +64,31 @@
                     @enderror
                 </div>
 
+                {{-- Campo: Foto --}}
+                <div class="form-group mb-3">
+                    <label for="foto" class="form-label"><strong>Foto</strong></label>
+                    <input type="file" name="foto" id="foto" class="form-control" accept="image/*">
+
+                    {{-- Exibe a imagem atual se existir --}}
+                    @if (isset($professor) && $professor->foto)
+                        <div class="mt-3">
+                            <p class="mb-1"><strong>Foto atual:</strong></p>
+                            <img src="{{ asset('storage/' . $professor->foto) }}" alt="Foto do Professor"
+                                class="img-thumbnail" style="max-width: 150px; height: auto;">
+                        </div>
+                    @endif
+
+                    @error('foto')
+                        <span class="text-danger small">{{ $message }}</span>
+                    @enderror
+                </div>
+
                 {{-- Botões de ação --}}
                 <div class="mt-4 d-flex gap-2">
-                    {{-- POST ou PUT → envia formulário --}}
                     <button type="submit" class="btn btn-dark btn-custom">
                         {{ isset($professor) ? 'Atualizar' : 'Cadastrar' }}
                     </button>
 
-                    {{-- GET → apenas redireciona --}}
                     <a href="{{ route('professores.index') }}" class="btn btn-secondary btn-custom">Cancelar</a>
                 </div>
             </form>

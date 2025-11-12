@@ -50,6 +50,20 @@
                         @endforeach
                     </tbody>
                 </table>
+
+                {{-- Paginação das notas --}}
+                @if ($notas->hasPages())
+                    <div class="pagination">
+                        <div class="pagination-info">
+                            {{ $notas->firstItem() }}–{{ $notas->lastItem() }}
+                            de {{ $notas->total() }}
+                        </div>
+
+                        <div class="pagination-links">
+                            {{ $notas->links() }}
+                        </div>
+                    </div>
+                @endif
             @endif
 
             {{-- Botão para voltar --}}

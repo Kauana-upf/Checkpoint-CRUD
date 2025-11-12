@@ -9,15 +9,19 @@ class Professor extends Model
 {
     use HasFactory;
 
-    // Definindo a tabela correta
     protected $table = 'professores';
+    protected $primaryKey = 'id_professor';
 
-    // Campos que podem ser preenchidos via create/store
-    protected $fillable = ['nome', 'email', 'disciplina_id'];
+    protected $fillable = [
+        'nome',
+        'email',
+        'disciplina_id',
+        'foto',
+        'status', // novo campo
+    ];
 
-    // Relacionamento com Disciplina
     public function disciplina()
     {
-        return $this->belongsTo(Disciplina::class, 'disciplina_id', 'id_disciplina');
+        return $this->belongsTo(Disciplina::class, 'disciplina_id');
     }
 }

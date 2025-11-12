@@ -9,7 +9,8 @@ class DisciplinaController extends Controller
 {
     public function index()
     {
-        $disciplinas = Disciplina::all();
+        // Alterado: usar paginate() no lugar de all() para habilitar paginação
+        $disciplinas = Disciplina::paginate(10); // 10 registros por página
         return view('disciplinas.index', compact('disciplinas'));
     }
 

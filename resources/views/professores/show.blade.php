@@ -7,21 +7,27 @@
         <div class="card shadow p-4">
             <h1>Detalhes do Professor</h1>
 
-            {{-- Exibe os dados do professor --}}
+            {{-- Foto --}}
+            @if ($professor->foto)
+                <div class="mb-3 text-center">
+                    <img src="{{ asset('storage/' . $professor->foto) }}" alt="Foto do Professor" class="img-thumbnail"
+                        style="max-width: 200px; height: auto;">
+                </div>
+            @endif
+
             <div class="mt-3">
-                <p><strong>ID:</strong> {{ $professor->id }}</p>
+                <p><strong>ID:</strong> {{ $professor->id_professor ?? $professor->id }}</p>
                 <p><strong>Nome:</strong> {{ $professor->nome }}</p>
                 <p><strong>Email:</strong> {{ $professor->email }}</p>
                 <p><strong>Disciplina:</strong> {{ $professor->disciplina->nome ?? 'Sem disciplina' }}</p>
             </div>
 
-            {{-- Botões de ação --}}
             <div class="mt-4 d-flex gap-2">
-                {{-- GET → apenas exibe o formulário de edição --}}
-                <a href="{{ route('professores.edit', $professor) }}" class="btn btn-dark btn-custom">Editar</a>
+                <a href="{{ route('professores.edit', $professor->id_professor ?? $professor->id) }}"
+                    class="btn btn-dark btn-custom">Editar</a>
 
-                {{-- DELETE → remove o professor --}}
-                <form action="{{ route('professores.destroy', $professor) }}" method="POST" class="d-inline">
+                <form action="{{ route('professores.destroy', $professor->id_professor ?? $professor->id) }}" method="POST"
+                    class="d-inline form-excluir">
                     @csrf
                     @method('DELETE')
                     <button type="button" class="btn-excluir btn btn-danger btn-custom" data-nome="{{ $professor->nome }}">
@@ -29,34 +35,33 @@
                     </button>
                 </form>
 
-                {{-- GET → apenas redireciona --}}
                 <a href="{{ route('professores.index') }}" class="btn btn-secondary btn-custom">Voltar</a>
             </div>
         </div>
     </div>
 
-    {{-- Script de confirmação SweetAlert2 --}}
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
-        // Confirma exclusão antes de enviar o formulário
-        document.querySelectorAll('.btn-excluir').forEach(button => {
-            button.addEventListener('click', function() {
-                const nome = this.getAttribute('data-nome');
-                const form = this.closest('form');
+        document.addEventListener("DOMContentLoaded", function() {
+            document.querySelectorAll('.btn-excluir').forEach(button => {
+                button.addEventListener('click', function() {
+                    const nome = this.getAttribute('data-nome');
+                    const form = this.closest('form');
 
-                Swal.fire({
-                    title: 'Excluir?',
-                    text: `Deseja realmente excluir "${nome}"?`,
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#d33',
-                    cancelButtonColor: '#6c757d',
-                    confirmButtonText: 'Sim',
-                    cancelButtonText: 'Cancelar'
-                }).then(result => {
-                    if (result.isConfirmed) {
-                        form.submit();
-                    }
+                    Swal.fire({
+                        title: 'Excluir?',
+                        text: `Deseja realmente excluir "${nome}"?`,
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#d33',
+                        cancelButtonColor: '#6c757d',
+                        confirmButtonText: 'Sim',
+                        cancelButtonText: 'Cancelar'
+                    }).then(result => {
+                        if (result.isConfirmed) {
+                            form.submit();
+                        }
+                    });
                 });
             });
         });

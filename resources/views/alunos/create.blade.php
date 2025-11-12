@@ -18,11 +18,8 @@
                 </div>
             @endif
 
-            {{-- Form. de cadastro de aluno --}}
-            {{-- "action" chama a rota alunos.store que executa o método store do controller --}}
-            {{-- "method=POST" é usado porque estamos ENVIANDO dados para o servidor --}}
-            {{-- lembrete: POST cria ou grava algo novo no banco, enquanto GET apenas lê dados --}}
-            <form action="{{ route('alunos.store') }}" method="POST">
+            {{-- Formulário de cadastro de aluno --}}
+            <form action="{{ route('alunos.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
 
                 <div class="form-group mb-3">
@@ -43,11 +40,13 @@
                         required>
                 </div>
 
-                <div class="d-flex justify-content-between mt-4">
-                    {{-- Volta para a lista de alunos --}}
-                    <a href="{{ route('alunos.index') }}" class="btn btn-secondary btn-custom">Voltar</a>
+                <div class="form-group mb-3">
+                    <label for="foto" class="form-label">Foto</label>
+                    <input type="file" name="foto" id="foto" class="form-control" accept="image/*">
+                </div>
 
-                    {{-- Envia o formulário para salvar o novo aluno --}}
+                <div class="d-flex justify-content-between mt-4">
+                    <a href="{{ route('alunos.index') }}" class="btn btn-secondary btn-custom">Voltar</a>
                     <button type="submit" class="btn btn-dark btn-custom">Cadastrar</button>
                 </div>
             </form>

@@ -8,12 +8,10 @@
             <h1 class="mb-4">Editar Aluno</h1>
 
             {{-- Formulário de edição do aluno --}}
-            {{-- action chama a rota alunos.update, que executa o método update no controller --}}
-            {{-- method="POST" é obrigatório em formulários, mas usamos @method('PUT') para indicar uma atualização --}}
-            {{-- PUT é usado para *ATUALIZAR* dados existentes (POST é para criar novos) --}}
-            <form action="{{ route('alunos.update', $aluno) }}" method="POST" class="d-flex flex-column gap-3">
+            <form action="{{ route('alunos.update', $aluno) }}" method="POST" class="d-flex flex-column gap-3"
+                enctype="multipart/form-data">
                 @csrf
-                @method('PUT') {{-- indica atualização! --}}
+                @method('PUT')
 
                 <div class="form-group">
                     <label for="nome" class="form-label">Nome</label>
@@ -33,11 +31,17 @@
                         value="{{ old('email', $aluno->email ?? '') }}" required>
                 </div>
 
-                <div class="d-flex justify-content-between mt-4">
-                    {{-- Volta para a lista de alunos --}}
-                    <a href="{{ route('alunos.index') }}" class="btn btn-secondary btn-custom">Voltar</a>
+                <div class="form-group">
+                    <label for="foto" class="form-label">Foto</label>
+                    <input type="file" name="foto" id="foto" class="form-control" accept="image/*">
+                    @if ($aluno->foto)
+                        <img src="{{ asset('storage/' . $aluno->foto) }}" alt="Foto do Aluno" class="mt-2"
+                            style="max-width:150px;">
+                    @endif
+                </div>
 
-                    {{-- Atualiza os dados do aluno --}}
+                <div class="d-flex justify-content-between mt-4">
+                    <a href="{{ route('alunos.index') }}" class="btn btn-secondary btn-custom">Voltar</a>
                     <button type="submit" class="btn btn-warning btn-custom">Atualizar</button>
                 </div>
             </form>

@@ -26,7 +26,7 @@
             {{-- Formulário de cadastro de professor --}}
             {{-- action chama a rota professores.store, que executa o método store no controller --}}
             {{-- method="POST" é usado pois estamos enviando dados para criar um novo registro --}}
-            <form action="{{ route('professores.store') }}" method="POST">
+            <form action="{{ route('professores.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
 
                 {{-- Campo: Nome --}}
@@ -50,7 +50,7 @@
                 </div>
 
                 {{-- Campo: Disciplina --}}
-                <div class="form-group mb-4">
+                <div class="form-group mb-3">
                     <label for="disciplina_id" class="form-label"><strong>Disciplina</strong></label>
                     <select name="disciplina_id" id="disciplina_id" class="form-select" required>
                         <option value="">Selecione a disciplina</option>
@@ -62,6 +62,15 @@
                         @endforeach
                     </select>
                     @error('disciplina_id')
+                        <span class="text-danger small">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                {{-- Campo: Foto --}}
+                <div class="form-group mb-4">
+                    <label for="foto" class="form-label"><strong>Foto</strong></label>
+                    <input type="file" name="foto" id="foto" class="form-control" accept="image/*">
+                    @error('foto')
                         <span class="text-danger small">{{ $message }}</span>
                     @enderror
                 </div>

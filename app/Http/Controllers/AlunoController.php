@@ -4,65 +4,80 @@ namespace App\Http\Controllers;
 
 use App\Models\Aluno;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class AlunoController extends Controller
 {
     public function index()
     {
-        $alunos = Aluno::all();
+        $alunos = Aluno::paginate(5);
         return view('alunos.index', compact('alunos'));
     }
-    
 
-    // Formulário para criar novo aluno
     public function create()
     {
         return view('alunos.create');
     }
 
-    // Salvar novo aluno
     public function store(Request $request)
     {
-        $request->validate([
-            'nome' => 'required',
+        $data = $request->validate([
+            'nome' => 'required|string|max:255',
             'data_nascimento' => 'required|date',
-            'email' => 'required|email'
+            'email' => 'required|email',
+            'status' => 'required|in:Ativo,Inativo',
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        Aluno::create($request->only(['nome', 'data_nascimento', 'email']));
+        if ($request->hasFile('foto')) {
+            $data['foto'] = $request->file('foto')->store('fotos', 'public');
+        }
 
+        Aluno::create($data);
         return redirect()->route('alunos.index')->with('success', 'Aluno criado com sucesso!');
     }
 
-    // Exibir um aluno específico
-    public function show(Aluno $aluno)
+    public function show($id)
     {
+        $aluno = Aluno::findOrFail($id);
         return view('alunos.show', compact('aluno'));
     }
 
-    // Formulário para editar aluno
-    public function edit(Aluno $aluno)
+    public function edit($id)
     {
+        $aluno = Aluno::findOrFail($id);
         return view('alunos.edit', compact('aluno'));
     }
 
-    // Atualizar aluno
-    public function update(Request $request, Aluno $aluno)
+    public function update(Request $request, $id)
     {
-        $request->validate([
-            'nome' => 'required',
+        $aluno = Aluno::findOrFail($id);
+
+        $data = $request->validate([
+            'nome' => 'required|string|max:255',
             'data_nascimento' => 'required|date',
-            'email' => 'required|email'
+            'email' => 'required|email',
+            'status' => 'required|in:Ativo,Inativo',
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        $aluno->update($request->only(['nome', 'data_nascimento', 'email']));
+        if ($request->hasFile('foto')) {
+            if ($aluno->foto) {
+                Storage::disk('public')->delete($aluno->foto);
+            }
+            $data['foto'] = $request->file('foto')->store('fotos', 'public');
+        }
 
-        return redirect()->route('alunos.index')->with('success', 'Aluno atualizado com sucesso!');
+        $aluno->update($data);
+        return redirect()->route('alunos.show', $aluno)->with('success', 'Aluno atualizado com sucesso!');
     }
 
-    // Deletar aluno
-    public function destroy(Aluno $aluno)
+    public function destroy($id)
     {
+        $aluno = Aluno::findOrFail($id);
+        if ($aluno->foto) {
+            Storage::disk('public')->delete($aluno->foto);
+        }
         $aluno->delete();
         return redirect()->route('alunos.index')->with('success', 'Aluno removido com sucesso!');
     }

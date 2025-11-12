@@ -13,5 +13,11 @@ class Aluno extends Model
     protected $primaryKey = 'id_aluno';
     public $timestamps = true;
 
-    protected $fillable = ['nome', 'data_nascimento', 'email'];
+    protected $fillable = [
+        'nome',
+        'data_nascimento',
+        'email',
+        'foto',
+        'status', // novo campo
+    ];
 }
