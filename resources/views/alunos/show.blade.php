@@ -14,6 +14,7 @@
             <div class="mb-3"><strong>Nome:</strong> {{ $aluno->nome }}</div>
             <div class="mb-3"><strong>Data de Nascimento:</strong> {{ $aluno->data_nascimento }}</div>
             <div class="mb-3"><strong>Email:</strong> {{ $aluno->email }}</div>
+
             <div class="mb-3">
                 <strong>Foto:</strong>
                 @if ($aluno->foto)
@@ -24,29 +25,20 @@
                 @endif
             </div>
 
-            {{-- EXIBIÇÃO DO STATUS --}}
             <div class="mb-3">
                 <strong>Status:</strong>
-                @if ($aluno->status === 'ativo')
+                @if ($aluno->status === 'Ativo')
                     <span class="badge bg-success">Ativo</span>
                 @else
                     <span class="badge bg-danger">Inativo</span>
                 @endif
             </div>
 
-            {{-- FORMULÁRIO PARA ALTERAR STATUS --}}
-            <form action="{{ route('alunos.alterarStatus', $aluno->id_aluno) }}" method="POST" class="d-inline">
-                @csrf
-                @method('PUT')
-                <button type="submit" class="btn btn-outline-primary btn-sm">
-                    {{ $aluno->status === 'ativo' ? 'Desativar Aluno' : 'Ativar Aluno' }}
-                </button>
-            </form>
-
             <hr class="my-4">
 
             <div class="d-flex gap-2 mt-4">
                 <a href="{{ route('alunos.edit', $aluno) }}" class="btn btn-warning btn-custom">Editar</a>
+
                 <form action="{{ route('alunos.destroy', $aluno) }}" method="POST" class="form-excluir">
                     @csrf
                     @method('DELETE')

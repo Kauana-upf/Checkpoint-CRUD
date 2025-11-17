@@ -7,11 +7,10 @@
         <div class="card shadow p-4">
             <h1>Detalhes do Professor</h1>
 
-            {{-- Foto --}}
             @if ($professor->foto)
                 <div class="mb-3 text-center">
                     <img src="{{ asset('storage/' . $professor->foto) }}" alt="Foto do Professor" class="img-thumbnail"
-                        style="max-width: 200px; height: auto;">
+                        style="max-width: 200px;">
                 </div>
             @endif
 
@@ -20,6 +19,15 @@
                 <p><strong>Nome:</strong> {{ $professor->nome }}</p>
                 <p><strong>Email:</strong> {{ $professor->email }}</p>
                 <p><strong>Disciplina:</strong> {{ $professor->disciplina->nome ?? 'Sem disciplina' }}</p>
+
+                {{-- STATUS --}}
+                <p><strong>Status:</strong>
+                    @if ($professor->status === 'Ativo')
+                        <span class="badge bg-success">Ativo</span>
+                    @else
+                        <span class="badge bg-danger">Inativo</span>
+                    @endif
+                </p>
             </div>
 
             <div class="mt-4 d-flex gap-2">

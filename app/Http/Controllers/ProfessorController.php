@@ -27,7 +27,7 @@ class ProfessorController extends Controller
             'nome' => 'required|string|max:255',
             'email' => 'required|email',
             'disciplina_id' => 'required|exists:disciplinas,id_disciplina',
-            'status' => 'required|in:Ativo,Inativo',
+            'ativo' => 'required|boolean',
             'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
@@ -58,7 +58,7 @@ class ProfessorController extends Controller
             'nome' => 'required|string|max:255',
             'email' => 'required|email',
             'disciplina_id' => 'required|exists:disciplinas,id_disciplina',
-            'status' => 'required|in:Ativo,Inativo',
+            'ativo' => 'required|boolean',
             'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 

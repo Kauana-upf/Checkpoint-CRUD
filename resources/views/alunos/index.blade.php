@@ -22,7 +22,7 @@
                             <th>Data de Nascimento</th>
                             <th>Email</th>
                             <th>Foto</th>
-                            <th>Status</th> {{-- ✅ Novo campo --}}
+                            <th>Status</th>
                             <th>Ações</th>
                         </tr>
                     </thead>

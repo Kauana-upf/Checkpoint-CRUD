@@ -9,7 +9,7 @@ class Professor extends Model
 {
     use HasFactory;
 
-    protected $table = 'professores';
+    protected $table = 'professores'; // ESSENCIAL
     protected $primaryKey = 'id_professor';
 
     protected $fillable = [
@@ -17,11 +17,11 @@ class Professor extends Model
         'email',
         'disciplina_id',
         'foto',
-        'status', // novo campo
+        'ativo', // usar somente isso
     ];
 
     public function disciplina()
     {
-        return $this->belongsTo(Disciplina::class, 'disciplina_id');
+        return $this->belongsTo(Disciplina::class, 'disciplina_id', 'id_disciplina');
     }
 }

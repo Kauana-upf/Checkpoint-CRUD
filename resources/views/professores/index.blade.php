@@ -19,8 +19,9 @@
                             <th>ID</th>
                             <th>Nome</th>
                             <th>Email</th>
-                            <th>Foto</th> {{-- mesma posição que alunos --}}
+                            <th>Foto</th>
                             <th>Disciplina</th>
+                            <th>Status</th>
                             <th>Ações</th>
                         </tr>
                     </thead>
@@ -31,11 +32,9 @@
                                 <td>{{ $professor->nome }}</td>
                                 <td>{{ $professor->email }}</td>
 
-                                {{-- Exibe a foto --}}
                                 <td>
                                     @if ($professor->foto)
                                         <img src="{{ asset('storage/' . $professor->foto) }}"
-                                            alt="Foto de {{ $professor->nome }}"
                                             style="width: 60px; height: 60px; object-fit: cover; border-radius: 50%;">
                                     @else
                                         <span class="text-muted">Sem foto</span>
@@ -43,6 +42,12 @@
                                 </td>
 
                                 <td>{{ $professor->disciplina->nome ?? 'Sem disciplina' }}</td>
+
+                                <td>
+                                    <span class="badge {{ $professor->ativo ? 'bg-success' : 'bg-danger' }}">
+                                        {{ $professor->ativo ? 'Ativo' : 'Inativo' }}
+                                    </span>
+                                </td>
 
                                 <td>
                                     <a href="{{ route('professores.show', $professor->id_professor ?? $professor->id) }}"
@@ -75,7 +80,6 @@
         </div>
     </div>
 
-    {{-- SweetAlert2 para confirmação de exclusão --}}
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         document.querySelectorAll('.btn-excluir').forEach(button => {

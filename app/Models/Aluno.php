@@ -18,6 +18,6 @@ class Aluno extends Model
         'data_nascimento',
         'email',
         'foto',
-        'status', // novo campo
+        'ativo',
     ];
 }

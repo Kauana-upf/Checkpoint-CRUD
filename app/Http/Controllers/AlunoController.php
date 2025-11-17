@@ -25,9 +25,22 @@ class AlunoController extends Controller
             'nome' => 'required|string|max:255',
             'data_nascimento' => 'required|date',
             'email' => 'required|email',
-            'status' => 'required|in:Ativo,Inativo',
+            // aceitar ambos: status (Ativo/Inativo) ou ativo (1/0)
+            'status' => 'nullable|in:Ativo,Inativo',
+            'ativo' => 'nullable|in:0,1',
             'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
+
+        // converter para o campo booleano 'ativo'
+        if (isset($data['status'])) {
+            $data['ativo'] = $data['status'] === 'Ativo' ? 1 : 0;
+            unset($data['status']);
+        } elseif (isset($data['ativo'])) {
+            $data['ativo'] = (int) $data['ativo'];
+        } else {
+            // padrão se nada informado
+            $data['ativo'] = 1;
+        }
 
         if ($request->hasFile('foto')) {
             $data['foto'] = $request->file('foto')->store('fotos', 'public');
@@ -57,9 +70,19 @@ class AlunoController extends Controller
             'nome' => 'required|string|max:255',
             'data_nascimento' => 'required|date',
             'email' => 'required|email',
-            'status' => 'required|in:Ativo,Inativo',
+            // aceitar ambos: status (Ativo/Inativo) ou ativo (1/0)
+            'status' => 'nullable|in:Ativo,Inativo',
+            'ativo' => 'nullable|in:0,1',
             'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
+
+        // converter para o campo booleano 'ativo'
+        if (isset($data['status'])) {
+            $data['ativo'] = $data['status'] === 'Ativo' ? 1 : 0;
+            unset($data['status']);
+        } elseif (isset($data['ativo'])) {
+            $data['ativo'] = (int) $data['ativo'];
+        }
 
         if ($request->hasFile('foto')) {
             if ($aluno->foto) {

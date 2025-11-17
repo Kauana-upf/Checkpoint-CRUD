@@ -7,7 +7,6 @@
         <div class="card p-4">
             <h1 class="mb-4">Cadastrar Aluno</h1>
 
-            {{-- Exibe mensagens de erro originadas da validação do formulário --}}
             @if ($errors->any())
                 <div class="alert alert-danger">
                     <ul>
@@ -18,7 +17,6 @@
                 </div>
             @endif
 
-            {{-- Formulário de cadastro de aluno --}}
             <form action="{{ route('alunos.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
 
@@ -43,6 +41,14 @@
                 <div class="form-group mb-3">
                     <label for="foto" class="form-label">Foto</label>
                     <input type="file" name="foto" id="foto" class="form-control" accept="image/*">
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="ativo" class="form-label">Status</label>
+                    <select name="ativo" id="ativo" class="form-control">
+                        <option value="1" selected>Ativo</option>
+                        <option value="0">Inativo</option>
+                    </select>
                 </div>
 
                 <div class="d-flex justify-content-between mt-4">
