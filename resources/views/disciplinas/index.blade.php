@@ -1,6 +1,6 @@
-@extends('layouts.layout_principal') // Usa o layout principal padrão
+@extends('layouts.layout_principal') {{-- Usa o layout principal padrão --}}
 
-@section('title', 'Disciplinas - Boletim Escolar Online') // Define o título da aba
+@section('title', 'Disciplinas - Boletim Escolar Online') {{-- Define o título da aba --}}
 
 @section('content')
 
@@ -36,6 +36,7 @@
                             <td>{{ $disciplina->id_disciplina ?? $disciplina->id }}</td>
                             <td>{{ $disciplina->nome }}</td>
                             <td>{{ $disciplina->carga_horaria }}</td>
+
                             {{-- Limita a descrição para não quebrar o layout --}}
                             <td title="{{ $disciplina->descricao }}">
                                 {{ Str::limit($disciplina->descricao, 80) }}
@@ -43,13 +44,18 @@
 
                             {{-- Botões de ação --}}
                             <td class="d-flex justify-content-center gap-2">
+
                                 {{-- GET usado porque apenas mostra --}}
                                 <a href="{{ route('disciplinas.show', $disciplina->id_disciplina ?? $disciplina->id) }}"
-                                    class="btn btn-sm btn-primary">Ver</a>
+                                    class="btn btn-sm btn-primary">
+                                    Ver
+                                </a>
 
                                 {{-- GET usado para abrir formulário de edição --}}
                                 <a href="{{ route('disciplinas.edit', $disciplina->id_disciplina ?? $disciplina->id) }}"
-                                    class="btn btn-sm btn-warning">Editar</a>
+                                    class="btn btn-sm btn-warning">
+                                    Editar
+                                </a>
 
                                 {{-- DELETE via formulário --}}
                                 <form
@@ -57,6 +63,7 @@
                                     method="POST" class="form-excluir">
                                     @csrf
                                     @method('DELETE')
+
                                     {{-- Botão só dispara SweetAlert --}}
                                     <button type="button" class="btn btn-sm btn-danger btn-excluir"
                                         data-nome="{{ $disciplina->nome }}">
@@ -90,6 +97,7 @@
 
     {{-- SweetAlert2 para confirmação de exclusão --}}
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             document.querySelectorAll('.btn-excluir').forEach(button => {
@@ -108,11 +116,12 @@
                         cancelButtonText: 'Cancelar'
                     }).then(result => {
                         if (result.isConfirmed) {
-                            form.submit(); // envia DELETE após confirmação
+                            form.submit();
                         }
                     });
                 });
             });
         });
     </script>
+
 @endsection

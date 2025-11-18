@@ -6,19 +6,19 @@
     <main>
         <div class="card p-4">
 
-            // Cabeçalho com título e botão de voltar
+            {{-- Cabeçalho --}}
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h1>Detalhes do Aluno</h1>
                 <a href="{{ route('alunos.index') }}" class="btn btn-secondary btn-custom">Voltar</a>
             </div>
 
-            // Exibe informações do aluno
+            {{-- Dados --}}
             <div class="mb-3"><strong>ID:</strong> {{ $aluno->id_aluno }}</div>
             <div class="mb-3"><strong>Nome:</strong> {{ $aluno->nome }}</div>
             <div class="mb-3"><strong>Data de Nascimento:</strong> {{ $aluno->data_nascimento }}</div>
             <div class="mb-3"><strong>Email:</strong> {{ $aluno->email }}</div>
 
-            // Foto do aluno (facultativo)
+            {{-- Foto --}}
             <div class="mb-3">
                 <strong>Foto:</strong>
                 @if ($aluno->foto)
@@ -29,23 +29,20 @@
                 @endif
             </div>
 
-            // Badge de status (Ativo/Inativo)
+            {{-- Status (CONSISTENTE: usa a string salva no banco) --}}
             <div class="mb-3">
                 <strong>Status:</strong>
-                @if ($aluno->status === 'Ativo')
-                    <span class="badge bg-success">Ativo</span>
-                @else
-                    <span class="badge bg-danger">Inativo</span>
-                @endif
+                <span class="badge {{ $aluno->status === 'Ativo' ? 'bg-success' : 'bg-danger' }}">
+                    {{ $aluno->status }}
+                </span>
             </div>
 
             <hr class="my-4">
 
-            // Botões de ação: Editar (GET) e Excluir (DELETE)
+            {{-- Ações --}}
             <div class="d-flex gap-2 mt-4">
                 <a href="{{ route('alunos.edit', $aluno) }}" class="btn btn-warning btn-custom">Editar</a>
 
-                // Formulário de exclusão do aluno
                 <form action="{{ route('alunos.destroy', $aluno) }}" method="POST" class="form-excluir">
                     @csrf
                     @method('DELETE')
@@ -56,7 +53,7 @@
             </div>
         </div>
 
-        // Script SweetAlert para confirmar exclusão do aluno
+        {{-- SweetAlert --}}
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script>
             document.addEventListener("DOMContentLoaded", function() {
@@ -76,7 +73,7 @@
                             cancelButtonText: 'Cancelar'
                         }).then(result => {
                             if (result.isConfirmed) {
-                                form.submit(); // envia DELETE para o controller
+                                form.submit();
                             }
                         });
                     });

@@ -7,7 +7,7 @@
         <div class="card shadow p-4">
             <h2 class="mb-4 text-center">Editar Disciplina</h2>
 
-            // Exibe mensagens de erro de validação, se houver
+            {{-- Exibe mensagens de erro de validação, se houver --}}
             @if ($errors->any())
                 <div class="alert alert-danger">
                     <ul class="mb-0">
@@ -18,14 +18,14 @@
                 </div>
             @endif
 
-            // Formulário para editar disciplina
-            // action chama a rota 'disciplinas.update' que executa o método update do controller
-            // method="POST" com @method('PUT') usado pois estamos atualizando um registro existente
+            {{-- Formulário para editar disciplina --}}
+            {{-- action chama a rota 'disciplinas.update' que executa o método update do controller --}}
+            {{-- method="POST" com @method('PUT') usado pois estamos atualizando um registro existente --}}
             <form action="{{ route('disciplinas.update', $disciplina->id_disciplina) }}" method="POST">
                 @csrf
                 @method('PUT')
 
-                // Campo para o nome da disciplina
+                {{-- Campo para o nome da disciplina --}}
                 <div class="form-group mb-3">
                     <label for="nome" class="form-label fw-semibold">Nome</label>
                     <input type="text" name="nome" id="nome" value="{{ old('nome', $disciplina->nome) }}"
@@ -35,7 +35,7 @@
                     @enderror
                 </div>
 
-                // Campo para a carga horária da disciplina
+                {{-- Campo para a carga horária da disciplina --}}
                 <div class="form-group mb-3">
                     <label for="carga_horaria" class="form-label fw-semibold">Carga Horária</label>
                     <input type="number" name="carga_horaria" id="carga_horaria"
@@ -45,13 +45,13 @@
                     @enderror
                 </div>
 
-                // Campo opcional de descrição
+                {{-- Campo opcional de descrição --}}
                 <div class="form-group mb-3">
                     <label for="descricao" class="form-label fw-semibold">Descrição</label>
                     <textarea name="descricao" id="descricao" rows="4" class="form-control">{{ old('descricao', $disciplina->descricao) }}</textarea>
                 </div>
 
-                // Botões: Atualizar envia PUT para update, Cancelar volta para show
+                {{-- Botões: Atualizar envia PUT para update, Cancelar volta para show --}}
                 <div class="d-flex justify-content-end gap-2 mt-3">
                     <button type="submit" class="btn btn-dark btn-custom">Atualizar</button>
                     <a href="{{ route('disciplinas.show', $disciplina->id_disciplina) }}"
@@ -59,7 +59,7 @@
                 </div>
             </form>
 
-            // Link extra para voltar ao dashboard
+            {{-- Link extra para voltar ao dashboard --}}
             <div class="mt-3 text-end">
                 <a href="{{ url('/dashboard') }}" class="btn btn-dark btn-custom">Voltar</a>
             </div>

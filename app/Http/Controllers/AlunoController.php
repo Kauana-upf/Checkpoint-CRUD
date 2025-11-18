@@ -31,19 +31,9 @@ class AlunoController extends Controller
             'nome' => 'required|string|max:255',
             'data_nascimento' => 'required|date',
             'email' => 'required|email',
-            'status' => 'nullable|in:Ativo,Inativo', // opcional para enum
-            'ativo' => 'nullable|in:0,1', // opcional para bool
+            'status' => 'required|in:Ativo,Inativo',
             'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // upload de imagem
         ]);
-
-        if (isset($data['status'])) {
-            $data['ativo'] = $data['status'] === 'Ativo' ? 1 : 0;
-            unset($data['status']);
-        } elseif (isset($data['ativo'])) {
-            $data['ativo'] = (int) $data['ativo'];
-        } else {
-            $data['ativo'] = 1; 
-        }
 
         // Upload de foto se existir
         if ($request->hasFile('foto')) {
@@ -81,16 +71,8 @@ class AlunoController extends Controller
             'data_nascimento' => 'required|date',
             'email' => 'required|email',
             'status' => 'nullable|in:Ativo,Inativo',
-            'ativo' => 'nullable|in:0,1',
             'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
-
-        if (isset($data['status'])) {
-            $data['ativo'] = $data['status'] === 'Ativo' ? 1 : 0;
-            unset($data['status']);
-        } elseif (isset($data['ativo'])) {
-            $data['ativo'] = (int) $data['ativo'];
-        }
 
         // Substitui foto antiga se houver upload novo
         if ($request->hasFile('foto')) {

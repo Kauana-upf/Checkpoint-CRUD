@@ -24,6 +24,6 @@ class Aluno extends Model
         'data_nascimento',  // obrigatório
         'email',            // obrigatório
         'foto',             // facultativo
-        'ativo',            // obrigatório, permite ativar/inativar
+        'status',            // obrigatório, permite ativar/inativar
     ];
 }
