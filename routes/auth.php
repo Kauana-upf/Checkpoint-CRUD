@@ -9,7 +9,7 @@ use App\Livewire\Auth\ResetPassword;
 use App\Livewire\Auth\VerifyEmail;
 use Illuminate\Support\Facades\Route;
 
-// Rotas para visitantes
+// Rotas para visitantes (usuários não autenticados)
 Route::middleware('guest')->group(function () {
     Route::get('login', Login::class)->name('login');
     Route::get('register', Register::class)->name('register');
@@ -19,15 +19,16 @@ Route::middleware('guest')->group(function () {
 
 // Rotas para usuários autenticados
 Route::middleware('auth')->group(function () {
-    // Tela Livewire que mostra instruções para verificação
+    // Tela Livewire que mostra instruções para verificação de e-mail
     Route::get('verify-email', VerifyEmail::class)
         ->name('verification.notice');
 
-    // Link clicado no e-mail → controller real
+    // Link clicado no e-mail → controller que processa a verificação
     Route::get('verify-email/{id}/{hash}', [VerifyEmailController::class, 'verify'])
         ->middleware(['auth', 'signed', 'throttle:6,1'])
         ->name('verification.verify');
 
+    // Confirmação de senha
     Route::get('confirm-password', ConfirmPassword::class)
         ->name('password.confirm');
 });

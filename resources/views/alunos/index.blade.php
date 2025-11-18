@@ -6,14 +6,17 @@
     <div class="container mt-4">
         <div class="card shadow p-4">
 
+            // Cabeçalho da página com título e botão de novo aluno
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h2>Alunos</h2>
                 <a href="{{ route('alunos.create') }}" class="btn btn-primary">+ Novo Aluno</a>
             </div>
 
+            // Verifica se há alunos cadastrados
             @if ($alunos->isEmpty())
                 <p>Nenhum aluno cadastrado.</p>
             @else
+                // Tabela de alunos com paginação (obrigatório)
                 <table class="table table-striped table-bordered text-center align-middle">
                     <thead>
                         <tr>
@@ -28,12 +31,14 @@
                     </thead>
                     <tbody>
                         @foreach ($alunos as $aluno)
+                            // Aplica estilo para alunos inativos
                             <tr @if (!$aluno->ativo) style="opacity: 0.6; color: red;" @endif>
                                 <td>{{ $aluno->id_aluno }}</td>
                                 <td>{{ $aluno->nome }}</td>
                                 <td>{{ $aluno->data_nascimento }}</td>
                                 <td>{{ $aluno->email }}</td>
                                 <td>
+                                    // Exibe foto do aluno se existir (facultativo)
                                     @if ($aluno->foto)
                                         <img src="{{ asset('storage/' . $aluno->foto) }}" alt="{{ $aluno->nome }}"
                                             style="width:50px; height:50px; object-fit:cover; border-radius:50%;">
@@ -42,6 +47,7 @@
                                     @endif
                                 </td>
                                 <td>
+                                    // Badge indicando status ativo ou inativo
                                     @if ($aluno->ativo)
                                         <span class="badge bg-success">Ativo</span>
                                     @else
@@ -49,8 +55,11 @@
                                     @endif
                                 </td>
                                 <td>
+                                    // Botões de ações: Ver, Editar, Excluir
                                     <a href="{{ route('alunos.show', $aluno) }}" class="link text-primary me-2">Ver</a>
                                     <a href="{{ route('alunos.edit', $aluno) }}" class="link text-warning me-2">Editar</a>
+
+                                    // Form para exclusão do aluno (usa método DELETE)
                                     <form action="{{ route('alunos.destroy', $aluno) }}" method="POST" class="d-inline">
                                         @csrf
                                         @method('DELETE')
@@ -66,6 +75,7 @@
                     </tbody>
                 </table>
 
+                // Paginação (obrigatório)
                 @if ($alunos->hasPages())
                     <div class="pagination d-flex justify-content-between align-items-center mt-3">
                         <div class="pagination-info text-muted">
@@ -78,12 +88,14 @@
                 @endif
             @endif
 
+            // Botão de voltar para dashboard
             <div class="mt-3 text-end">
                 <a href="{{ url('/dashboard') }}" class="btn btn-secondary">Voltar</a>
             </div>
         </div>
     </div>
 
+    // Script SweetAlert para confirmação de exclusão (facultativo)
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         document.querySelectorAll('.btn-excluir').forEach(botao => {
@@ -102,7 +114,7 @@
                     cancelButtonText: 'Cancelar'
                 }).then(result => {
                     if (result.isConfirmed) {
-                        form.submit();
+                        form.submit(); // envia form DELETE para o controller
                     }
                 });
             });

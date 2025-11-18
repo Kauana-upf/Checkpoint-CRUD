@@ -9,19 +9,21 @@ class Professor extends Model
 {
     use HasFactory;
 
-    protected $table = 'professores'; // ESSENCIAL
-    protected $primaryKey = 'id_professor';
+    protected $table = 'professores'; // Define a tabela do banco (essencial)
+    protected $primaryKey = 'id_professor'; // Chave primária personalizada
 
+    // Campos permitidos para preenchimento em massa
     protected $fillable = [
-        'nome',
-        'email',
-        'disciplina_id',
-        'foto',
-        'ativo', // usar somente isso
+        'nome',           // Nome do professor
+        'email',          // Email do professor
+        'disciplina_id',  // FK para Disciplina
+        'foto',           // Foto do professor (opcional)
+        'ativo',          // Status: 1 = ativo, 0 = inativo
     ];
 
     public function disciplina()
     {
+        // Relacionamento "muitos para um" com Disciplina
         return $this->belongsTo(Disciplina::class, 'disciplina_id', 'id_disciplina');
     }
 }

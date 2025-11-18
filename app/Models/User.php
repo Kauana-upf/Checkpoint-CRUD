@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -10,52 +9,37 @@ use Illuminate\Support\Str;
 
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable; // HasFactory para factories, Notifiable para notificações
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
+    // Campos permitidos para preenchimento em massa
     protected $fillable = [
-        'name',
-        'email',
-        'password',
+        'name',      // Nome do usuário
+        'email',     // Email do usuário
+        'password',  // Senha do usuário (armazenada de forma segura)
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
-     */
+    // Campos que devem ser ocultos na serialização (ex: JSON)
     protected $hidden = [
         'password',
-        'remember_token',
+        'remember_token', // token de sessão
     ];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
+    // Campos que devem ser convertidos automaticamente
     protected function casts(): array
     {
         return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
+            'email_verified_at' => 'datetime', // converte timestamp
+            'password' => 'hashed',            // criptografa automaticamente
         ];
     }
 
-    /**
-     * Get the user's initials
-     */
+    // Retorna as iniciais do usuário (ex: João Silva -> JS)
     public function initials(): string
     {
         return Str::of($this->name)
-            ->explode(' ')
-            ->take(2)
-            ->map(fn ($word) => Str::substr($word, 0, 1))
-            ->implode('');
+            ->explode(' ')             // separa por espaços
+            ->take(2)                  // pega as duas primeiras palavras
+            ->map(fn ($word) => Str::substr($word, 0, 1)) // pega a primeira letra de cada
+            ->implode('');             // une em uma string
     }
 }

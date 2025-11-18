@@ -9,16 +9,16 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('disciplinas', function (Blueprint $table) {
-            $table->id('id_disciplina'); // chave primária personalizada
-            $table->string('nome', 100);
-            $table->integer('carga_horaria');
-            $table->text('descricao')->nullable();
-            $table->timestamps();
+            $table->id('id_disciplina'); // define a chave primária personalizada
+            $table->string('nome', 100); // nome da disciplina
+            $table->integer('carga_horaria'); // carga horária em horas
+            $table->text('descricao')->nullable(); // descrição opcional da disciplina
+            $table->timestamps(); // created_at e updated_at automáticos
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('disciplinas');
+        Schema::dropIfExists('disciplinas'); // remove a tabela em rollback
     }
 };

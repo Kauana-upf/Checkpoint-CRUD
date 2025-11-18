@@ -6,23 +6,21 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
+    // Adiciona coluna foto na tabela alunos
     public function up(): void
     {
         Schema::table('alunos', function (Blueprint $table) {
-            $table->string('foto')->nullable()->after('email'); // adiciona a coluna foto após o email
+            $table->string('foto')->nullable()->after('email'); 
+            // Nullable pois o upload é opcional
+            // after('email') define a posição da coluna na tabela
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
+    // Remove coluna foto caso seja feito rollback
     public function down(): void
     {
         Schema::table('alunos', function (Blueprint $table) {
-            $table->dropColumn('foto'); // remove a coluna se fizer rollback
+            $table->dropColumn('foto'); 
         });
     }
 };

@@ -6,20 +6,19 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
+    // Cria a tabela de professores com chave estrangeira
     public function up(): void
     {
         Schema::create('professores', function (Blueprint $table) {
-            $table->id('id_professor'); // chave primária personalizada
-            $table->string('nome');
-            $table->string('email')->unique();
-            $table->unsignedBigInteger('disciplina_id');
-            $table->string('foto')->nullable(); // adicionada aqui direto
-            $table->timestamps();
+            $table->id('id_professor'); // Chave primária personalizada (não usar id padrão)
+            $table->string('nome'); // Nome do professor
+            $table->string('email')->unique(); // Email único para login ou contato
+            $table->unsignedBigInteger('disciplina_id'); // FK para disciplina (obrigatório: relacionamento)
+            $table->string('foto')->nullable(); // Upload de foto (opcional)
+            $table->timestamps(); // created_at e updated_at
 
-            // Relacionamento com a tabela disciplinas
+            // Define a relação de chave estrangeira com disciplinas
+            // onDelete cascade: se disciplina for deletada, professor relacionado também é removido
             $table->foreign('disciplina_id')
                 ->references('id_disciplina')
                 ->on('disciplinas')
@@ -27,9 +26,7 @@ return new class extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
+    // Remove a tabela caso seja necessário rollback
     public function down(): void
     {
         Schema::dropIfExists('professores');

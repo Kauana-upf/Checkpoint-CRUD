@@ -5,8 +5,10 @@
 @section('content')
     <div class="container mt-4">
         <div class="card shadow p-4">
+            {{-- Título da página --}}
             <h1>Detalhes do Professor</h1>
 
+            {{-- Exibe a foto do professor, se existir --}}
             @if ($professor->foto)
                 <div class="mb-3 text-center">
                     <img src="{{ asset('storage/' . $professor->foto) }}" alt="Foto do Professor" class="img-thumbnail"
@@ -14,13 +16,14 @@
                 </div>
             @endif
 
+            {{-- Informações do professor --}}
             <div class="mt-3">
                 <p><strong>ID:</strong> {{ $professor->id_professor ?? $professor->id }}</p>
                 <p><strong>Nome:</strong> {{ $professor->nome }}</p>
                 <p><strong>Email:</strong> {{ $professor->email }}</p>
                 <p><strong>Disciplina:</strong> {{ $professor->disciplina->nome ?? 'Sem disciplina' }}</p>
 
-                {{-- STATUS --}}
+                {{-- Status --}}
                 <p><strong>Status:</strong>
                     @if ($professor->status === 'Ativo')
                         <span class="badge bg-success">Ativo</span>
@@ -30,6 +33,7 @@
                 </p>
             </div>
 
+            {{-- Botões de ação: editar, excluir e voltar --}}
             <div class="mt-4 d-flex gap-2">
                 <a href="{{ route('professores.edit', $professor->id_professor ?? $professor->id) }}"
                     class="btn btn-dark btn-custom">Editar</a>
@@ -48,6 +52,7 @@
         </div>
     </div>
 
+    {{-- Script SweetAlert2 para confirmação de exclusão --}}
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {

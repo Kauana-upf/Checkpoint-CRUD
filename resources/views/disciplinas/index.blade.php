@@ -1,12 +1,11 @@
-@extends('layouts.layout_principal') {{-- Usa o layout principal padrão --}}
+@extends('layouts.layout_principal') // Usa o layout principal padrão
 
-@section('title', 'Disciplinas - Boletim Escolar Online') {{-- Define o título da aba --}}
+@section('title', 'Disciplinas - Boletim Escolar Online') // Define o título da aba
 
 @section('content')
-    {{-- Importa o CSS principal --}}
-    {{-- asset() busca o arquivo dentro de public/css --}}
 
     <head>
+        {{-- Importa o CSS principal --}}
         <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     </head>
 
@@ -19,7 +18,6 @@
         </div>
 
         {{-- Tabela com todas as disciplinas --}}
-        {{-- table-bordered e text-center são classes do Bootstrap --}}
         <div class="table-responsive mb-4">
             <table class="table table-bordered text-center align-middle">
                 <thead class="table-light">
@@ -32,15 +30,13 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {{-- foreach percorre todas as disciplinas enviadas pelo controller --}}
+                    {{-- Percorre todas as disciplinas enviadas pelo controller --}}
                     @foreach ($disciplinas as $disciplina)
                         <tr>
-                            {{-- Exibe os dados da disciplina --}}
                             <td>{{ $disciplina->id_disciplina ?? $disciplina->id }}</td>
                             <td>{{ $disciplina->nome }}</td>
                             <td>{{ $disciplina->carga_horaria }}</td>
-
-                            {{-- Str::limit corta a descrição para não quebrar o layout --}}
+                            {{-- Limita a descrição para não quebrar o layout --}}
                             <td title="{{ $disciplina->descricao }}">
                                 {{ Str::limit($disciplina->descricao, 80) }}
                             </td>
@@ -55,14 +51,13 @@
                                 <a href="{{ route('disciplinas.edit', $disciplina->id_disciplina ?? $disciplina->id) }}"
                                     class="btn btn-sm btn-warning">Editar</a>
 
-                                {{-- POST é obrigatório em formulários, mas com @method('DELETE')
-                                     informamos ao Laravel que é uma exclusão --}}
+                                {{-- DELETE via formulário --}}
                                 <form
                                     action="{{ route('disciplinas.destroy', $disciplina->id_disciplina ?? $disciplina->id) }}"
                                     method="POST" class="form-excluir">
                                     @csrf
                                     @method('DELETE')
-                                    {{-- Botão não envia direto — SweetAlert confirma antes --}}
+                                    {{-- Botão só dispara SweetAlert --}}
                                     <button type="button" class="btn btn-sm btn-danger btn-excluir"
                                         data-nome="{{ $disciplina->nome }}">
                                         Excluir
@@ -74,14 +69,12 @@
                 </tbody>
             </table>
 
-            {{-- Paginação das disciplinas --}}
+            {{-- Paginação --}}
             @if ($disciplinas->hasPages())
                 <div class="pagination">
                     <div class="pagination-info">
-                        {{ $disciplinas->firstItem() }}–{{ $disciplinas->lastItem() }}
-                        de {{ $disciplinas->total() }}
+                        {{ $disciplinas->firstItem() }}–{{ $disciplinas->lastItem() }} de {{ $disciplinas->total() }}
                     </div>
-
                     <div class="pagination-links">
                         {{ $disciplinas->links() }}
                     </div>
@@ -95,19 +88,15 @@
         </div>
     </div>
 
-    {{-- Script SweetAlert2 para confirmação ao excluir --}}
-    {{-- Necessário pois DELETE não deve ser feito sem confirmação --}}
+    {{-- SweetAlert2 para confirmação de exclusão --}}
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
-        // Espera o carregamento completo da página
         document.addEventListener("DOMContentLoaded", function() {
-            // Seleciona todos os botões de exclusão
             document.querySelectorAll('.btn-excluir').forEach(button => {
                 button.addEventListener('click', function() {
                     const nome = this.getAttribute('data-nome');
-                    const form = this.closest('form'); // pega o form correto
+                    const form = this.closest('form');
 
-                    // Exibe alerta de confirmação
                     Swal.fire({
                         title: 'Excluir?',
                         text: `Deseja realmente excluir "${nome}"?`,
@@ -118,9 +107,8 @@
                         confirmButtonText: 'Sim',
                         cancelButtonText: 'Cancelar'
                     }).then(result => {
-                        // Se confirmado, envia o formulário
                         if (result.isConfirmed) {
-                            form.submit();
+                            form.submit(); // envia DELETE após confirmação
                         }
                     });
                 });

@@ -7,7 +7,7 @@
         <div class="card p-4">
             <h1 class="mb-4">Editar Nota</h1>
 
-            {{-- Exibe erros de validação --}}
+            // Exibe erros de validação
             @if ($errors->any())
                 <div class="alert alert-danger">
                     <ul class="mb-0">
@@ -18,12 +18,12 @@
                 </div>
             @endif
 
-            {{-- Formulário de edição --}}
+            // Formulário de edição
             <form action="{{ route('notas.update', $nota->id_nota) }}" method="POST">
                 @csrf
                 @method('PUT')
 
-                {{-- Campo: Aluno --}}
+                // Campo: Aluno
                 <div class="form-group mb-3">
                     <label for="id_aluno" class="form-label"><strong>Aluno</strong></label>
                     <select name="id_aluno" id="id_aluno" class="form-select" required>
@@ -36,7 +36,7 @@
                     </select>
                 </div>
 
-                {{-- Campo: Disciplina --}}
+                // Campo: Disciplina
                 <div class="form-group mb-3">
                     <label for="id_disciplina" class="form-label"><strong>Disciplina</strong></label>
                     <select name="id_disciplina" id="id_disciplina" class="form-select" required>
@@ -49,14 +49,14 @@
                     </select>
                 </div>
 
-                {{-- Campo: Nota --}}
+                // Campo: Nota
                 <div class="form-group mb-4">
                     <label for="nota" class="form-label"><strong>Nota</strong></label>
                     <input type="number" name="nota" id="nota" step="0.01" min="0" max="10"
                         class="form-control" value="{{ old('nota', $nota->nota) }}" required>
                 </div>
 
-                {{-- Botões --}}
+                // Botões
                 <div class="d-flex justify-content-between">
                     <button type="submit" class="btn btn-dark btn-custom">Atualizar</button>
                     <a href="{{ route('notas.index') }}" class="btn btn-secondary btn-custom">Voltar</a>
