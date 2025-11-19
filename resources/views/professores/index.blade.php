@@ -30,14 +30,11 @@
                     <tbody>
                         @foreach ($professores as $professor)
                             <tr>
-                                {{-- ID do professor --}}
                                 <td>{{ $professor->id_professor ?? $professor->id }}</td>
-
-                                {{-- Nome e email --}}
                                 <td>{{ $professor->nome }}</td>
                                 <td>{{ $professor->email }}</td>
 
-                                {{-- Foto do professor, se existir --}}
+                                {{-- Foto --}}
                                 <td>
                                     @if ($professor->foto)
                                         <img src="{{ asset('storage/' . $professor->foto) }}"
@@ -47,25 +44,23 @@
                                     @endif
                                 </td>
 
-                                {{-- Nome da disciplina, se existir --}}
+                                {{-- Disciplina --}}
                                 <td>{{ $professor->disciplina->nome ?? 'Sem disciplina' }}</td>
 
-                                {{-- Status ativo/inativo --}}
+                                {{-- Status --}}
                                 <td>
-                                    <span class="badge {{ $professor->ativo ? 'bg-success' : 'bg-danger' }}">
-                                        {{ $professor->ativo ? 'Ativo' : 'Inativo' }}
+                                    <span class="badge {{ $professor->status === 'Ativo' ? 'bg-success' : 'bg-danger' }}">
+                                        {{ $professor->status }}
                                     </span>
                                 </td>
 
-                                {{-- Ações: ver, editar e excluir --}}
+                                {{-- Ações --}}
                                 <td>
                                     <a href="{{ route('professores.show', $professor->id_professor ?? $professor->id) }}"
                                         class="link text-primary me-2">Ver</a>
-
                                     <a href="{{ route('professores.edit', $professor->id_professor ?? $professor->id) }}"
                                         class="link text-warning me-2">Editar</a>
 
-                                    {{-- Formulário de exclusão com SweetAlert2 --}}
                                     <form
                                         action="{{ route('professores.destroy', $professor->id_professor ?? $professor->id) }}"
                                         method="POST" class="d-inline">
@@ -84,14 +79,13 @@
                 </table>
             @endif
 
-            {{-- Botão para voltar ao dashboard --}}
             <div class="mt-3 text-end">
                 <a href="{{ url('/dashboard') }}" class="btn btn-dark btn-custom">Voltar</a>
             </div>
         </div>
     </div>
 
-    {{-- Script SweetAlert2 para confirmação de exclusão --}}
+    {{-- SweetAlert2 --}}
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         document.querySelectorAll('.btn-excluir').forEach(button => {

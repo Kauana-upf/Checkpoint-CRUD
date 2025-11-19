@@ -9,11 +9,11 @@ use Illuminate\Http\Request;
 
 class NotaController extends Controller
 {
-    // Lista todas as notas (obrigatório: index com listagem)
+    // Lista todas as notas (com paginação)
     public function index()
     {
         // GET usado pois apenas visualizamos os registros
-        $notas = Nota::all(); // retorna todas as notas
+        $notas = Nota::paginate(10); // 10 registros por página
         return view('notas.index', compact('notas'));
     }
 

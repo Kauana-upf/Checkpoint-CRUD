@@ -58,10 +58,10 @@
 
                 {{-- Campo: Status --}}
                 <div class="form-group mb-3">
-                    <label for="ativo" class="form-label"><strong>Status</strong></label>
-                    <select name="ativo" id="ativo" class="form-select" required>
-                        <option value="1" {{ old('ativo') == '1' ? 'selected' : '' }}>Ativo</option>
-                        <option value="0" {{ old('ativo') == '0' ? 'selected' : '' }}>Inativo</option>
+                    <label for="status" class="form-label"><strong>Status</strong></label>
+                    <select name="status" id="status" class="form-select" required>
+                        <option value="Ativo" {{ old('status') == 'Ativo' ? 'selected' : '' }}>Ativo</option>
+                        <option value="Inativo" {{ old('status') == 'Inativo' ? 'selected' : '' }}>Inativo</option>
                     </select>
                 </div>
 
